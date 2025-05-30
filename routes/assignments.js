@@ -77,6 +77,15 @@ function postAssignment(req, res){
     assignment.nom = req.body.nom;
     assignment.dateDeRendu = req.body.dateDeRendu;
     assignment.rendu = req.body.rendu;
+    assignment.auteur = req.body.auteur;
+    //assignment.matiere = req.body.matiere;
+    assignment.remarques = req.body.remarques;
+    assignment.note = req.body.note;
+    assignment.matiere = {
+        nom: req.body.matiere.nom,
+        image: req.body.matiere.image,
+        imageProf: req.body.matiere.imageProf
+    };
 
     console.log("POST assignment reçu :");
     console.log(assignment)
@@ -93,7 +102,22 @@ function postAssignment(req, res){
 function updateAssignment(req, res) {
     console.log("UPDATE recu assignment : ");
     console.log(req.body);
-    Assignment.findByIdAndUpdate(req.body._id, req.body, {new: true}, (err, assignment) => {
+
+    const updateData = {
+        nom: req.body.nom,
+        dateDeRendu: req.body.dateDeRendu,
+        rendu: req.body.rendu,
+        auteur: req.body.auteur,
+        matiere: {
+            nom: req.body.matiere.nom,
+            image: req.body.matiere.image,
+            imageProf: req.body.matiere.imageProf
+        },
+        remarques: req.body.remarques,
+        note: req.body.note
+    };
+
+    Assignment.findByIdAndUpdate(req.body._id, updateData, {new: true}, (err, assignment) => {
         if (err) {
             console.log(err);
             res.send(err)

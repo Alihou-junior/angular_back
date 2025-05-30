@@ -13,7 +13,7 @@ let AssignmentSchema = Schema({
     matiere : {
         nom: String,
         image : String, 
-        ImageProf: String
+        imageProf: String
     }, 
     remarques : String, 
     note : Number
