@@ -11,8 +11,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 //
-// const uri = 'mongodb+srv://anman:jeveuxmanger@cluster0.ysjb4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-const uri = 'mongodb+srv://admin:test1234@cluster0.txoeh3c.mongodb.net/assignments?retryWrites=true&w=majority';
+const uri = process.env.MONGODB_URI ;
 
 const options = {
   useNewUrlParser: true,
