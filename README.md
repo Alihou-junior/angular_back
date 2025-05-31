@@ -45,4 +45,38 @@ JWT_SECRET=votre_jwt_secret
 ```bash 
 node server.js
 ```
-l'API est accessible par defaut sur ```bash http://localhost:8010/api/assignments ```
+l'API est accessible par defaut sur ```http://localhost:8010/api/assignments```
+
+<br>
+
+### Deploiement 
+Pour deployer sur Render.com :
+- Connecter le repo GitHub 
+- Build command = ```npm install```
+- Start command = ```node server.js```
+- Ajouter les variables d'environnement : 
+    - MONGO_URI
+    - JWT_SECRET
+
+Apres lancement, Render vous retournera un Url de la forme ```https://assignment-backend.onrender.com```, l'API sera alors accessible via ```https://assignment-backend.onrender.com/api/assignments ```
+
+<br>
+
+### Construit avec
+- Express.js - Framework serveur
+- Mongoose - ODM pour MongoDB
+- MongoDB Atlas - Base de Données 
+- JWT - Authentification via token 
+- Render - Deploiement cloud 
+
+<br>
+
+### Auteurs 
+- [Alihou-junior](https://github.com/Alihou-junior)
+- [capatainkomic](https://github.com/capatainkomic)
+
+<br>
+
+### Remerciements
+- A l'equipe MBDS pour le sujet
+- A mes collegues testeurs anonymes
