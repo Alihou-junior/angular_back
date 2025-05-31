@@ -24,3 +24,25 @@ Installation de Node et npm :
 <br>
 
 ### Installation 
+##### cloner le depot 
+```bash 
+git clone https://github.com/votre-utilisateur/backend-assignments.git
+cd backend-assignments
+```
+
+##### installer les dependances
+```bash 
+npm install
+```
+
+##### Créer un fichier .env à la racine du projet 
+le fichier doit contenir : 
+```bash 
+MONGO_URI=mongodb+srv://lien_URI_obtenu_sur_mongoBD_Atlas
+JWT_SECRET=votre_jwt_secret
+```
+##### Lancer le serveur localemnt
+```bash 
+node server.js
+```
+l'API est accessible par defaut sur ```bash http://localhost:8010/api/assignments ```
