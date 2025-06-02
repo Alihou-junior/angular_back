@@ -55,6 +55,7 @@ function getAssignmentsAvecPagination(req, res){
 function getAssignment(req, res){
     let assignmentId = req.params.id;
     console.log(assignmentId);
+    console.log("type de assignmentId : " + typeof assignmentId);
 
     // si on cherche un objet par une ou plusieurs propriétés autres que _id qui
     // est la clé primaire de l'objet, on peut utiliser la méthode find ou findOne
@@ -84,7 +85,7 @@ function postAssignment(req, res){
     assignment.matiere = {
         nom: req.body.matiere.nom,
         image: req.body.matiere.image,
-        imageProf: req.body.matiere.imageProf
+        imageProf: req.body.matiere.imageProf !== '' ? req.body.matiere.imageProf : 'https://i.pinimg.com/736x/65/22/af/6522aff04c2e8d330fe32de8a234e828.jpg' // URL de l'image par défaut
     };
 
     console.log("POST assignment reçu :");

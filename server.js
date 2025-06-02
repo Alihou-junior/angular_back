@@ -10,7 +10,7 @@ const assignment = require('./routes/assignments');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-//
+// 
 const uri = process.env.MONGO_URI ;
 
 const options = {
@@ -47,11 +47,17 @@ const prefix = '/api';
 // Modèle User
 const UserSchema = new mongoose.Schema({
   username: String,
+  name: String,
+  surname: String,
   email: String,
   password: String,
   createdAt: { type: Date, default: Date.now },
+  role: { type: String, default: 'user' } ,// 'user' ou 'admin'
+  image: { type: String, default: 'https://i.pinimg.com/736x/12/d5/91/12d5916f5595f1fc53407813d2170a8c.jpg' } ,// URL de l'image par défaut
 });
 
+
+// C'est à travers ce modèle Mongoose qu'on pourra faire le CRUD
 const User = mongoose.model("User", UserSchema);
 
 // Middleware pour vérifier le token JWT
@@ -80,12 +86,22 @@ app.route(prefix + '/assignments/:id')
 
 // Route : Inscription
 app.post(prefix + '/register', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, name, surname, email, password , role} = req.body;
+
+  // Vérification des données
+  if (!username || !email || !password || !name || !surname) {
+    return res.status(400).json({ message: 'Champs obligatoires manquants' });
+  }
 
   // Vérifier si l'email existe déjà
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res.status(400).json({ message: 'Email déjà utilisé' });
+  }
+
+  // Validation du rôle
+  if (role && !['user', 'admin'].includes(role)) {
+    return res.status(400).json({ message: 'Rôle invalide' });
   }
 
   // Hacher le mot de passe
@@ -94,8 +110,11 @@ app.post(prefix + '/register', async (req, res) => {
   // Créer un nouvel utilisateur
   const newUser = new User({
     username,
+    name,
+    surname,
     email,
     password: hashedPassword,
+    role: role 
   });
 
   await newUser.save();
@@ -115,7 +134,7 @@ app.post(prefix + '/login', async (req, res) => {
   if (!validPassword) return res.status(400).json({ message: "Mot de passe incorrect" });
 
   // Générer un token JWT
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "5h" });
   res.json({ token });
 });
 
