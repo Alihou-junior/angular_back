@@ -1,4 +1,4 @@
-# angularBackM2MBDSESATIC2024_2025-
+# angularBack_AssignmentApp_2024_2025-
 
 Une application Web permettant aux utilisateurs de gerer leurs devoirs et d'y apporter quelques precisions tels qu'une note, des remarques, ...
 Ce projet constitue la partie backend de l'app. Les données sont stockées dans une base MongoDB atlas.
@@ -76,7 +76,3 @@ Apres lancement, Render vous retournera un Url de la forme ```https://assignment
 - [capatainkomic](https://github.com/capatainkomic)
 
 <br>
-
-## Remerciements
-- A l'equipe MBDS pour le sujet
-- A mes collegues testeurs anonymes
