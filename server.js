@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const assignment = require('./routes/assignments');
+const matiere = require('./routes/matiere');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -24,6 +25,7 @@ mongoose.connect(uri, options)
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
     console.log("at URI = " + uri);
     console.log("vérifiez with http://localhost:8010/api/assignments que cela fonctionne");
+    console.log("vérifiez with http://localhost:8010/api/matieres que cela fonctionne");
   })
   .catch(err => {
     console.log('Erreur de connexion: ', err);
@@ -83,6 +85,30 @@ app.route(prefix + '/assignments')
 app.route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
+
+
+// Routes pour les matières
+app.route(prefix + '/matieres')
+  .get(matiere.getMatieres)
+  .put(matiere.updateMatiere);
+
+app.route(prefix + '/matieres/paginated')
+  .get(matiere.getMatieresAvecPagination);
+
+app.route(prefix + '/matieres/:id')
+  .get(matiere.getMatiereById)
+  .post(matiere.postMatiere)
+  .delete(matiere.deleteMatiere);
+
+app.route(prefix + '/matieres/responsable/:id')
+  .get(matiere.getMatieresByResponsable);
+
+app.route(prefix + '/matieres/responsable/:id/paginated')
+  .get(matiere.getMatieresByResponsableAvecPagination);
+
+
+
+
 
 // Route : Inscription
 app.post(prefix + '/register', async (req, res) => {
