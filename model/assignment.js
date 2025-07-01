@@ -9,12 +9,8 @@ let AssignmentSchema = Schema({
     dateDeRendu: Date,
     nom: String,
     rendu: Boolean , 
-    auteur: String , 
-    matiere : {
-        nom: String,
-        image : String, 
-        imageProf: String
-    }, 
+    auteur: {type: Schema.Types.ObjectId, ref: 'User'} , 
+    matiere : {type : Schema.Types.ObjectId, ref: 'Matiere'}, 
     remarques : String, 
     note : Number
 });
