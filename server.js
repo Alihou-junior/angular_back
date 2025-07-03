@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 dotenv.config();
 
-//const verifyToken = require('./middlewares/verifyToken');
-//const user = require('./route/users');
+// Imports des middlewares
+const verifyToken = require('./middlewares/verifyToken');
+
+// Import des routes 
+const user = require('./routes/users');
 const assignment = require('./routes/assignments');
 const matiere = require('./routes/matieres');
 const mongoose = require('mongoose');
@@ -34,23 +35,6 @@ mongoose.connect(uri, options)
     console.log('Erreur de connexion: ', err);
   });
 
-/* // Middleware pour CORS
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
-}); */
-
-// Middleware dynamique
-/* app.use(cors({
-  origin: (origin, callback) => {
-    callback(null, origin || '*'); // Autorise toutes les origines explicitement
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-})); */
 
 // Configure CORS
 app.use(cors({
@@ -71,7 +55,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Configuration de Cloudinary avec vos identifiants (à mettre dans .env)
+// Configuration de Cloudinary avec mes identifiants (à mettre dans .env)
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,  // Nom du cloud Cloudinary
   api_key: process.env.CLOUDINARY_API_KEY,        // Clé API trouvée sur le dashboard
@@ -120,37 +104,6 @@ app.post(prefix + '/upload/image', upload.single('image'), async (req, res) => {
 });
 
 
-// Modèle User
-const UserSchema = new mongoose.Schema({
-  username: String,
-  name: String,
-  surname: String,
-  email: String,
-  password: String,
-  createdAt: { type: Date, default: Date.now },
-  role: { type: String, default: 'user' } ,// 'user' ou 'admin'
-  image: { type: String, default: 'https://i.pinimg.com/736x/12/d5/91/12d5916f5595f1fc53407813d2170a8c.jpg' } ,// URL de l'image par défaut
-});
-
-
-
-
-// C'est à travers ce modèle Mongoose qu'on pourra faire le CRUD
-const User = mongoose.model("User", UserSchema);
-
-// Middleware pour vérifier le token JWT
-const verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ message: "Accès refusé" });
-
-  try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
-    next();
-  } catch (err) {
-    res.status(400).json({ message: "Token invalide" });
-  }
-};
 
 
 // Routes pour les assignments 
@@ -196,68 +149,20 @@ app.route(prefix + '/matieres/responsable/:id/paginated')
 
 
 
+// Route pour users 
+app.route(prefix + '/register')
+  .post(user.register);
+
+app.route(prefix + '/login')
+  .post(user.login);
+
+app.route(prefix + '/profile')
+  .get(verifyToken, user.getProfile)
+  .put(verifyToken, user.updateProfile);
+  
 
 
 
-// Route : Inscription
-app.post(prefix + '/register', async (req, res) => {
-  const { username, name, surname, email, password , role} = req.body;
-
-  // Vérification des données
-  if (!username || !email || !password || !name || !surname) {
-    return res.status(400).json({ message: 'Champs obligatoires manquants' });
-  }
-
-  // Vérifier si l'email existe déjà
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: 'Email déjà utilisé' });
-  }
-
-  // Validation du rôle
-  if (role && !['user', 'admin'].includes(role)) {
-    return res.status(400).json({ message: 'Rôle invalide' });
-  }
-
-  // Hacher le mot de passe
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Créer un nouvel utilisateur
-  const newUser = new User({
-    username,
-    name,
-    surname,
-    email,
-    password: hashedPassword,
-    role: role 
-  });
-
-  await newUser.save();
-  res.json({ message: 'Utilisateur créé avec succès' });
-});
-
-// Route : Connexion
-app.post(prefix + '/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  // Vérifier si l'utilisateur existe
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "Utilisateur non trouvé" });
-
-  // Vérifier le mot de passe
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) return res.status(400).json({ message: "Mot de passe incorrect" });
-
-  // Générer un token JWT
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "5h" });
-  res.json({ token });
-});
-
-// Route : Profil utilisateur (Protégée)
-app.get(prefix + '/profile', verifyToken, async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password");
-  res.json(user);
-});
 
 // Démarrer le serveur
 app.listen(port, "0.0.0.0");
