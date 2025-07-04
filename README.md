@@ -40,7 +40,45 @@ le fichier doit contenir :
 ```bash 
 MONGO_URI=mongodb+srv://lien_URI_obtenu_sur_mongoBD_Atlas
 JWT_SECRET=votre_jwt_secret
+CLOUDINARY_CLOUD_NAME=NOM_DE_VOTRE_CLOUD
+CLOUDINARY_API_KEY=CLE_API_ASSOCIEE
+CLOUDINARY_API_SECRET=CLE_API_SECRET_ASSOCIEE
 ```
+> ## 📦 Configuration du Stockage d'Images
+>
+> ### Cloudinary - Hébergement des médias utilisateurs
+>
+> **Note importante** :  
+> Les images uploadées par les utilisateurs sont normalement stockées sur Cloudinary.  
+> Pour développer en local, vous devrez créer votre propre compte.
+>
+> #### 🛠 Étapes de configuration :
+> 
+> 1. **Inscription gratuite**  
+>   Créez un compte sur [Cloudinary](https://cloudinary.com) (offre gratuite suffisante)
+>
+> 2. **Récupération des clés API**  
+>    Dans votre espace Cloudinary :
+>    - Cliquez sur ⚙ **Paramètres / Settings** (en bas à gauche)
+>    - Allez dans l'onglet **API keys**
+>    - Copiez ces 3 informations :
+>     ```
+>     Nom du cloud
+>     Clé API
+>     Secret API
+>     ```
+>     <img width="1906" height="823" alt="Image" src="https://github.com/user-attachments/assets/a77d3a41-d6ad-4542-88a0-18819058290d" />
+>
+> #### ℹ️ Pourquoi Cloudinary ?
+> - **Gratuit** pour les petits projets (10GB de stockage inclus)
+> - **Optimisation automatique** des images
+> - **Sécurisé** avec liens signés
+> - **Facile à intégrer** avec Angular/Node.js
+>
+> 💡 Le service reste gratuit tant que vous ne dépassez pas 10 000 images/mois.  
+> Parfait pour notre usage pédagogique !
+>
+
 #### Lancer le serveur localemnt
 ```bash 
 node server.js
@@ -57,6 +95,9 @@ Pour deployer sur Render.com :
 - Ajouter les variables d'environnement : 
     - MONGO_URI
     - JWT_SECRET
+    - CLOUDINARY_CLOUD_NAME
+    - CLOUDINARY_API_KEY
+    - CLOUDINARY_API_SECRET
 
 Apres lancement, Render vous retournera un Url de la forme ```https://assignment-backend.onrender.com```, l'API sera alors accessible via ```https://assignment-backend.onrender.com/api/assignments ```
 
@@ -67,12 +108,13 @@ Apres lancement, Render vous retournera un Url de la forme ```https://assignment
 - Mongoose - ODM pour MongoDB
 - MongoDB Atlas - Base de Données 
 - JWT - Authentification via token 
-- Render - Deploiement cloud 
+- Render - Deploiement cloud
+- Cloudinary - Stokage des images (et autres média) dans le cloud
 
 <br>
 
-## Auteurs 
-- [Alihou-junior](https://github.com/Alihou-junior)
-- [capatainkomic](https://github.com/capatainkomic)
+## Auteur(s) et Autrice(s) 
+- [Alihou-junior](https://github.com/Alihou-junior) - Développeur principal
+- [capatainkomic](https://github.com/capatainkomic) - Développeuse collaboratrice
 
 <br>
