@@ -1,41 +1,39 @@
-# angularBack_AssignmentApp_2024_2025-
+# AssignmentApp - Backend
 
 Une application Web permettant aux utilisateurs de gerer leurs devoirs et d'y apporter quelques precisions tels qu'une note, des remarques, ...
 Ce projet constitue la partie backend de l'app. Les données sont stockées dans une base MongoDB atlas.
 
-<br>
 Ces instructions fourniront une copie du projet utilisable en local pour du developpement ou du test( voir section deploiement plus bas pour la maniere de deployer le projet à distance)
 <br>
 
-## Conditions prealables
 
-Il est necessaire d'avoir : 
+
+## Installation 
+### Prérequis 
 - [Node.js](https://nodejs.org/en/) > v17
-- npm(fourni avec Node.js)
-- un compte [Mongo Atlas]
+- npm (fourni avec Node.js)
+- un compte [Mongo Atlas](https://www.mongodb.com/fr-fr/products/platform/atlas-database)
 
-Installation de Node et npm : 
+### Installation de Node.js et npm : 
 ```bash
     sudo apt install nodejs npm
     node -v 
     npm -v 
 ```
 
-<br>
 
-## Installation 
-#### cloner le depot 
+### cloner le depot 
 ```bash 
 git clone https://github.com/votre-utilisateur/backend-assignments.git
 cd backend-assignments
 ```
 
-#### installer les dependances
+### Installer les dependances
 ```bash 
 npm install
 ```
 
-#### Créer un fichier .env à la racine du projet 
+### Créer un fichier .env à la racine du projet 
 le fichier doit contenir : 
 ```bash 
 MONGO_URI=mongodb+srv://lien_URI_obtenu_sur_mongoBD_Atlas
@@ -44,7 +42,7 @@ CLOUDINARY_CLOUD_NAME=NOM_DE_VOTRE_CLOUD
 CLOUDINARY_API_KEY=CLE_API_ASSOCIEE
 CLOUDINARY_API_SECRET=CLE_API_SECRET_ASSOCIEE
 ```
-> ## 📦 Configuration du Stockage d'Images
+> ### 📦 Configuration du Stockage d'Images
 >
 > ### Cloudinary - Hébergement des médias utilisateurs
 >
